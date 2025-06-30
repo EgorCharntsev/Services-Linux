@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результат конвертации</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 50px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .image-container { display: flex; justify-content: space-around; margin: 20px 0; }
+        .image-box { text-align: center; }
+        img { max-width: 300px; height: auto; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Конвертация завершена успешно!</h1>
+        <div class="image-container">
+            <div class="image-box">
+                <h3>Оригинальное изображение</h3>
+                <a href="/original/{{original_filename}}" target="_blank">
+                    <img src="/original/{{original_filename}}" alt="Оригинал">
+                </a>
+            </div>
+            <div class="image-box">
+                <h3>Черно-белое изображение</h3>
+                <a href="/converted/{{converted_filename}}" target="_blank">
+                    <img src="/converted/{{converted_filename}}" alt="Конвертированное">
+                </a>
+            </div>
+        </div>
+        <p><a href="/">← Вернуться на главную страницу</a></p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,7 @@
+all:
+  hosts:
+    srv1:
+      ansible_host: 192.168.0.100
+      ansible_user: root
+      ansible_connection: ssh
+      

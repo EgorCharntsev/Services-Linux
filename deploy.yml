@@ -1,0 +1,59 @@
+---
+- name: Deploy WebApp for image conversion
+  hosts: srv1
+  become: yes
+  vars:
+    domain: "domain.test"
+  tasks:
+    - name: Install required packages
+      apt:
+        name:
+          - apache2
+          - imagemagick
+          - python3
+        update_cache: yes
+
+    - name: Enable CGI module
+      shell: |
+        a2enmod cgi
+        systemctl restart apache2
+
+    - name: Create directories
+      file:
+        path: "/var/www/webapp/{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - "cgi-bin"
+        - "original"
+        - "converted"
+        - "html"
+
+    - name: Copy HTML files
+      copy:
+        src: "html/"
+        dest: "/var/www/webapp/html/"
+
+    - name: Copy CGI script
+      copy:
+        src: "cgi-bin/converter.py"
+        dest: "/var/www/webapp/cgi-bin/converter.py"
+        mode: '0755'
+
+    - name: Configure Apache Virtual Host
+      template:
+        src: "vhost.conf"
+        dest: "/etc/apache2/sites-available/{{ domain }}.conf"
+
+    - name: Enable site and disable default
+      shell: |
+        a2ensite {{ domain }}
+        a2dissite 000-default
+        systemctl restart apache2
+
+    - name: Set permissions
+      file:
+        path: "/var/www/webapp"
+        owner: www-data
+        group: www-data
+        recurse: yes
